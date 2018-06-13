@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>My Word Book</title>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="css/materialize.min.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+</head>
+<body>
+  <nav class="light-blue lighten-0" role="navigation">
+    <div class="nav-wrapper container"><a id="logo-container" href="homepage.html" class="brand-logo">My Word Book</a>
+      <ul class="right hide-on-med-and-down">
+        <li>
+          <a href="#" class="breadcrumb">登陆</a>
+        </li>
+      </ul>
+
+      <ul id="nav-mobile" class="side-nav">
+        <li>
+          <a href="#" class="breadcrumb">登陆</a>
+        </li>
+      </ul>
+      <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+    </div>
+  </nav>
+  <div class="section no-pad-bot" id="index-banner">
+    <div class="container">
+      <h1 class="header center orange-text">登陆</h1>
+    </div>
+  </div>
+  
+  <div class="row">
+    <form class="col s12">
+      <div class="row">
+        <div class="input-field col s2 offset-s5">
+          <input id="user_name" type="text" class="validate">
+          <label for="password">用户名</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s2 offset-s5">
+          <input id="password" type="password" class="validate">
+          <label for="password">密码</label>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="row center">
+    <input type="submit" id="login-button" class="btn-large waves-effect waves-light orange" value="登陆" />
+  </div>
+  <br><br><br>
+  <div class="divider"></div>
+  <div class="row">
+      <div class="col s3 offset-s5">没有账号？点击<a href="register.html" id="register">这里</a>注册</div>
+  </div>
+  
+  <br><br><br>
+  <footer class="page-footer orange">
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text">关于开发团队</h5>
+          <p class="grey-text text-lighten-4">3150105426 蔡展璋</p>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+      Made by <a class="orange-text text-lighten-3" href="http://materializecss.com">Materialize</a>
+      </div>
+    </div>
+  </footer>
+
+
+  <!--  Scripts-->
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="js/materialize.js"></script>
+  <script src="js/init.js"></script>
+
+  </body>
+</html>
