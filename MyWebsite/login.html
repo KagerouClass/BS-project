@@ -32,26 +32,25 @@
       <h1 class="header center orange-text">登陆</h1>
     </div>
   </div>
-  
-  <div class="row">
-    <form class="col s12">
-      <div class="row">
-        <div class="input-field col s2 offset-s5">
-          <input id="user_name" type="text" class="validate">
-          <label for="password">用户名</label>
+  <form action="http://foo.com" method="post"> 
+    <div class="row">
+        <div class="row">
+          <div class="input-field col s2 offset-s5">
+            <input id="user_name" type="text" class="validate" name="user_name">
+            <label for="user_name">用户名</label>
+          </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="input-field col s2 offset-s5">
-          <input id="password" type="password" class="validate">
-          <label for="password">密码</label>
+        <div class="row">
+          <div class="input-field col s2 offset-s5">
+            <input id="password" type="password" class="validate" name="password">
+            <label for="password">密码</label>
+          </div>
         </div>
-      </div>
-    </form>
-  </div>
-  <div class="row center">
-    <input type="submit" id="login-button" class="btn-large waves-effect waves-light orange" value="登陆" />
-  </div>
+    </div>
+    <div class="row center">
+      <input type="submit" id="login-button" class="btn-large waves-effect waves-light orange" value="登陆" name="submit" onclick="return checkLogin(user_name, password);"/>
+    </div>
+  </form>
   <br><br><br>
   <div class="divider"></div>
   <div class="row">
@@ -80,6 +79,7 @@
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script src="js/materialize.js"></script>
   <script src="js/init.js"></script>
+  <script src="js/login.js"></script>
 
   </body>
 </html>
