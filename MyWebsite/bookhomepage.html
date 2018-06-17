@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+    <title>My Word Book</title>
+
+    <!-- CSS  -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="css/materialize.min.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  </head>
+  <body>
+    <header>
+      <nav class="light-blue lighten-0" role="navigation">
+        <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">My Word Book</a>
+          <ul class="right hide-on-med-and-down">
+            <li>
+              <a href="#" class="breadcrumb">个人主页</a>
+            </li>
+          </ul>
+
+          <ul id="nav-mobile" class="side-nav">
+            <li><a href="#" class="breadcrumb">个人主页</a></li>
+          </ul>
+        
+          <!--↓侧边导航-->
+          <ul id="slide-out" class="side-nav fixed">
+            <li><div class="userView">
+              <div class="background">
+                <img src="images/office.jpg">
+              </div>
+              <a href="#!user"><img class="circle" src="images/TSAICHANCHANG.jpg"></a>
+              <a href="#!name"><span class="white-text name">蔡展璋</span></a>
+              <a href="#!email"><span class="white-text email">czz861924@gmail.com</span></a>
+            </div></li>
+            <li><a class="waves-effect" href="#!">单词背诵</a></li>
+            <li><a class="waves-effect" href="#!">自定义单词本</a></li>
+            <li><div class="divider"></div></li>
+            <li><a class="waves-effect" href="#!">复习</a></li>
+            <li><a class="waves-effect" href="#!">测试</a></li>
+            <li><a class="waves-effect" href="#!">背诵概况</a></li>
+          </ul>
+          <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+        </div>
+      </nav>
+    </header> 
+    <main>
+      <br><br>
+      <div class="row">
+        <div class="col s4 offset-s1">
+            <div class="card small">
+              <div class="card-image waves-effect waves-block waves-light">
+                <img class="activator" src="images/toefl-logo-png.png">
+              </div>
+              <div class="card-content">
+                <span class="card-title activator grey-text text-darken-4">托福单词本<i class="material-icons right">more_vert</i></span>
+                <p><a href="#">开始背诵</a></p>
+              </div>
+              <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4">托福单词本<i class="material-icons right">close</i></span>
+                <p>托福单词本</p>
+              </div>   
+            </div>
+        </div>
+        <div class="col s4 offset-s1">
+            <div class="card small">
+              <div class="card-image waves-effect waves-block waves-light">
+                <img class="activator" src="images/GRE.jpg">
+              </div>
+              <div class="card-content">
+                <span class="card-title activator grey-text text-darken-4">GRE单词本<i class="material-icons right">more_vert</i></span>
+                <p><a href="#">开始背诵</a></p>
+              </div>
+              <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4">GRE单词本<i class="material-icons right">close</i></span>
+                <p>GRE单词本</p>
+              </div>   
+            </div>
+        </div>
+      </div>
+      <br><br>
+    </main>
+    <footer class="page-footer orange">
+      <div class="container">
+        <div class="row">
+          <div class="col l6 s12">
+            <h5 class="white-text">关于开发团队</h5>
+            <p class="grey-text text-lighten-4">3150105426 蔡展璋</p>
+          </div>
+        </div>
+      </div>
+      <div class="footer-copyright">
+        <div class="container">
+        Made by <a class="orange-text text-lighten-3" href="http://materializecss.com">Materialize</a>
+        </div>
+      </div>
+    </footer>
+    
+
+    <!--  Scripts-->
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="js/materialize.js"></script>
+    <script src="js/init.js"></script>
+    <script src="js/bookhomepage.js"></script>
+  </body>
+</html>
