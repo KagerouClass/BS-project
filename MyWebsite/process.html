@@ -16,12 +16,12 @@
         <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">My Word Book</a>
           <ul class="right hide-on-med-and-down">
             <li>
-              <a href="#" class="breadcrumb">个人主页</a>
+              <a href="#" class="breadcrumb">学习进度</a>
             </li>
           </ul>
 
           <ul id="nav-mobile" class="side-nav">
-            <li><a href="#" class="breadcrumb">个人主页</a></li>
+            <li><a href="#" class="breadcrumb">学习进度</a></li>
           </ul>
         
           <!--↓侧边导航-->
@@ -34,12 +34,12 @@
               <a href="#!name"><span class="white-text name">蔡展璋</span></a>
               <a href="#!email"><span class="white-text email">czz861924@gmail.com</span></a>
             </div></li>
-            <li><a class="waves-effect" href="#!">单词背诵</a></li>
+            <li><a class="waves-effect" href="bookhomepage.html">返回选择单词本</a></li>
             <li><a class="waves-effect" href="#!">自定义单词本</a></li>
             <li><div class="divider"></div></li>
             <li><a class="waves-effect" href="wordsreview.html">复习</a></li>
             <li><a class="waves-effect" href="test.html">测试</a></li>
-            <li><a class="waves-effect" href="process.html">背诵概况</a></li>
+            <li><a class="waves-effect" href="#!">背诵概况</a></li>
             <li><a class="waves-effect" href="homepage.html">退出登陆</a></li>
           </ul>
           <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
@@ -56,7 +56,10 @@
               </div>
               <div class="card-content">
                 <span class="card-title activator grey-text text-darken-4">托福单词本<i class="material-icons right">more_vert</i></span>
-                <p><a href="memorywords.html">开始背诵</a></p>
+                <div class="progress">
+                    <div class="determinate" id="progress-bar" style="width: 0%"></div>
+                </div>
+                <div id="progress-number">0/4000</div>
               </div>
               <div class="card-reveal">
                 <span class="card-title grey-text text-darken-4">托福单词本<i class="material-icons right">close</i></span>
@@ -102,7 +105,6 @@
     <!--  Scripts-->
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="js/materialize.js"></script>
-    <script src="js/init.js"></script>
-    <script src="js/bookhomepage.js"></script>
+    <script src="js/process.js"></script>
   </body>
 </html>
