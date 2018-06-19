@@ -44,8 +44,20 @@ function login(user_name, password){
         {
             if(res === "success") 
             {
-                window.location.href = 'bookhomepage.html?id=' + document.getElementById("user_name").value;
-            }
+                var email;
+                $.ajax({
+                    //type: "post",
+                    data: "email_req&" + document.getElementById("user_name").value+"&"+document.getElementById("password").value,
+                    url: 'http://127.0.0.1:5426',
+                    async:false,
+                    dataType: "jsonp",
+                    jsonp: "callback",
+                    jsonpCallback: "email_jsonpCallback",
+                }).done(function (res) 
+                {
+                    window.location.href = 'bookhomepage.html?user_name=' + document.getElementById("user_name").value+'?email='+res;
+                });
+                }
             else if(res == "password_wrong")
             {
                 alert("密码错误");

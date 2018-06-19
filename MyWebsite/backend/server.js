@@ -27,7 +27,7 @@ function handle(data, res)
   {
     user_name = data[2];
     password  = data[3];
-    querySentence = 'SELECT user_name,password FROM user_information WHERE user_name=\''+user_name+'\'';
+    querySentence = 'SELECT user_name,password,email FROM user_information WHERE user_name=\''+user_name+'\'';
     var isLegalUser = false;
     connection.query(querySentence, function (error, results, fields) {
       if (error) throw error;
@@ -36,6 +36,7 @@ function handle(data, res)
         if(results[0].password == password)
         {
           isLegalUser = true;
+          var email = results[0].email;
           res.writeHead(200, {'Content-Type': 'application/json'});
           res.end('successConnect_jsonpCallback(' + JSON.stringify('success')+ ')');
         }
@@ -98,6 +99,21 @@ function handle(data, res)
       }
     });
     
+  }
+  else if(data[1] == "email_req") 
+  {
+    user_name = data[2];
+    password  = data[3];
+    querySentence = 'SELECT user_name,password,email FROM user_information WHERE user_name=\''+user_name+'\'';
+    connection.query(querySentence, function (error, results, fields) {
+      if (error) throw error;
+      if(results[0])
+      {
+        var email = results[0].email;
+        res.writeHead(200, {'Content-Type': 'application/json'});
+        res.end('email_jsonpCallback(' + JSON.stringify(email)+ ')');
+      }
+    });  
   }
 }
 http.createServer((req, res) =>

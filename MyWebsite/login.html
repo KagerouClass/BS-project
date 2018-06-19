@@ -36,13 +36,13 @@
     <div class="row">
         <div class="row">
           <div class="input-field col s6 m4 l2 offset-s3 offset-m4 offset-l5">
-            <input type="text" class="validate" name="user_name" id="user_name">
+            <input onkeyup="value=value.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5\.]/g,'')" onpaste="value=value.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5\.]/g,'')" oncontextmenu = "value=value.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5\.]/g,'')" type="text" class="validate" name="user_name" id="user_name">
             <label for="user_name">用户名</label>
           </div>
         </div>
         <div class="row">
           <div class="input-field col s6 m4 l2 offset-s3 offset-m4 offset-l5">
-            <input type="password" class="validate" name="password" id="password">
+            <input onkeyup="value=value.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5\.]/g,'')" onpaste="value=value.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5\.]/g,'')" oncontextmenu = "value=value.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5\.]/g,'')" type="password" class="validate" name="password" id="password">
             <label for="password">密码</label>
           </div>
         </div>
