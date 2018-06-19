@@ -20,58 +20,88 @@ var connection = mysql.createConnection({
 });
 connection.connect();
 //start the server
-http.createServer(function (req, res) 
+
+function handle(data, res)
 {
-  var body = "";
-  req.on('data', function (chunk) 
+  if(data[1]=="login_req") 
   {
-    body += chunk;
-  });
-  req.on('end', function () 
-  {
-    body = querystring.parse(body);
-    
-    if(body.user_name && body.password) 
-    {
-      user_name = body.user_name;
-      password  = body.password;
-      querySentence = 'SELECT user_name,password FROM user_information WHERE user_name=\''+user_name+'\'';
-      var isLegalUser = false;
-      connection.query(querySentence, function (error, results, fields) {
-        if (error) throw error;
-        if(results[0])
+    user_name = data[2];
+    password  = data[3];
+    querySentence = 'SELECT user_name,password FROM user_information WHERE user_name=\''+user_name+'\'';
+    var isLegalUser = false;
+    connection.query(querySentence, function (error, results, fields) {
+      if (error) throw error;
+      if(results[0])
+      {
+        if(results[0].password == password)
         {
-          if(results[0].password == password)
-          {
-            isLegalUser = true;
-            res.writeHead(200, {'Content-Type': 'application/json'});
-            let json = JSON.stringify('success');
-            res.end(json);
-          }
-          else
-          {
-            console.log('The user is illegal');
-            res.writeHead(200, {'Content-Type': 'text/html; charset=utf8'});
-            res.end();
-            //res.write("password wrong");
-          }
+          isLegalUser = true;
+          res.writeHead(200, {'Content-Type': 'application/json'});
+          res.end('successConnect_jsonpCallback(' + JSON.stringify('success')+ ')');
         }
         else
         {
-          console.log('The user is not existed');
-          res.writeHead(200, {'Content-Type': 'text/html; charset=utf8'});
-          res.end();
-          //res.write("account not exits");
+          res.writeHead(200, {'Content-Type': 'application/json'});
+          res.end('successConnect_jsonpCallback(' + JSON.stringify('password_wrong')+ ')');
         }
-      });
-    } 
-    else
-    {
-      res.writeHead(200, {'Content-Type': 'text/html; charset=utf8'});
-      res.end();
-    }
+      }
+      else
+      {
+        res.writeHead(200, {'Content-Type': 'application/json'});
+        res.end('successConnect_jsonpCallback(' + JSON.stringify('user_does_not_exist')+ ')');
+      }
+    });  
+  } 
+  else if(data[1] == "register_req")
+  {
+    user_name = data[2];
+    password  = data[3];
+    email     = data[4];
+    querySentence = 'SELECT user_name FROM user_information WHERE user_name=\''+user_name+'\'';
+    connection.query(querySentence, function (error, results, fields) {
+      if (error) throw error;
+      if(results[0])
+      {
+        if(results[0].user_name == user_name)
+        {
+          res.writeHead(200, {'Content-Type': 'application/json'});
+          res.end('successConnect_jsonpCallback(' + JSON.stringify('user_duplicate')+ ')');
+        }
+      }
+      else
+      {
+        querySentence = 'SELECT email FROM user_information WHERE email=\''+email+'\'';
+        connection.query(querySentence, function (error, results, fields) {
+          if (error) throw error;
+          if(results[0])
+          {
+            if(results[0].email == email)
+            {
+              res.writeHead(200, {'Content-Type': 'application/json'});
+              res.end('successConnect_jsonpCallback(' + JSON.stringify('email_duplicate')+ ')');
+            }
+          }
+          else
+          {
+            querySentence = 'SELECT count(1) as count FROM user_information';
+            connection.query(querySentence, function (error, results, fields) {
+              if (error) throw error;
+              querySentence = 'insert into user_information values (\''+(results[0].count+1)+'\','+'\''+user_name+'\','+'\''+password+'\','+'\''+email+'\')';
+                connection.query(querySentence, function (error, results, fields) {
+                  if (error) throw error;
+                  res.writeHead(200, {'Content-Type': 'application/json'});
+                  res.end('successConnect_jsonpCallback(' + JSON.stringify('success')+ ')');
+              });
+            });
+          }
+        });
+      }
+    });
     
-  });
+  }
+}
+http.createServer((req, res) =>
+{
+  handle(req.url.split('&'), res);
 }).listen(5426);
-
 console.log('Server running at http://127.0.0.1:5426/');
