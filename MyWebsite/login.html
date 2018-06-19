@@ -35,26 +35,26 @@
   <form action="http://127.0.0.1:5426" method="post"> 
     <div class="row">
         <div class="row">
-          <div class="input-field col s4 m2 offset-s4 offset-m5">
-            <input type="text" class="validate" name="user_name">
+          <div class="input-field col s6 m4 l2 offset-s3 offset-m4 offset-l5">
+            <input type="text" class="validate" name="user_name" id="user_name">
             <label for="user_name">用户名</label>
           </div>
         </div>
         <div class="row">
-          <div class="input-field col s4 m2 offset-s4 offset-m5">
-            <input type="password" class="validate" name="password">
+          <div class="input-field col s6 m4 l2 offset-s3 offset-m4 offset-l5">
+            <input type="password" class="validate" name="password" id="password">
             <label for="password">密码</label>
           </div>
         </div>
     </div>
     <div class="row center">
-      <input type="submit" id="login-button" class="btn-large waves-effect waves-light orange" value="登陆" name="submit" onclick="loadXMLDoc();return checkLogin(user_name, password);"/>
+      <input type="submit" id="login-button" class="btn-large waves-effect waves-light orange" value="登陆" name="submit" onclick="return checkLogin(user_name, password);"/>
     </div>
   </form>
   <br><br><br>
   <div class="divider"></div>
   <div class="row">
-      <div class="col s6 m4 offset-s4 offset-m5">没有账号？点击<a href="register.html" id="register">这里</a>注册</div>
+      <div class="col s12 m4 l4 offset-s3 offset-m4 offset-l5">没有账号？点击<a href="register.html" id="register">这里</a>注册</div>
   </div>
   
   <br><br><br>

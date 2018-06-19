@@ -35,23 +35,18 @@ http.createServer(function (req, res)
     {
       user_name = body.user_name;
       password  = body.password;
-      console.log('The request user_name is: ', user_name);
-      console.log('The request password is: ', password);
       querySentence = 'SELECT user_name,password FROM user_information WHERE user_name=\''+user_name+'\'';
       var isLegalUser = false;
       connection.query(querySentence, function (error, results, fields) {
         if (error) throw error;
         if(results[0])
         {
-          console.log('The user_name is: ', results[0].user_name);
-          console.log('The password is: ', results[0].password);
           if(results[0].password == password)
           {
             isLegalUser = true;
-            console.log('The user is legal');
-            res.writeHead(200, {'Content-Type': 'text/html; charset=utf8'});
-            res.write(nextpage);
-            res.end();
+            res.writeHead(200, {'Content-Type': 'application/json'});
+            let json = JSON.stringify('success');
+            res.end(json);
           }
           else
           {
