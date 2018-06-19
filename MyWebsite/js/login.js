@@ -55,7 +55,7 @@ function login(user_name, password){
                     jsonpCallback: "email_jsonpCallback",
                 }).done(function (res) 
                 {
-                    window.location.href = 'bookhomepage.html?user_name=' + document.getElementById("user_name").value+'?email='+res;
+                    window.location.href = 'bookhomepage.html?user_name=' + document.getElementById("user_name").value;//+'?email='+res;
                 });
                 }
             else if(res == "password_wrong")
