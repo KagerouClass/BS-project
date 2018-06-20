@@ -21,6 +21,10 @@ function toBookHomepage()
 {
   window.location.href = 'bookhomepage.html?' + user_name;
 }
+function toUserWordBook()
+{
+  window.location.href = 'userwordbook.html?' + user_name;
+}
 function toTest()
 {
   window.location.href = 'test.html?' + user_name;
@@ -28,4 +32,8 @@ function toTest()
 function toProcess()
 {
   window.location.href = 'process.html?' + user_name;
+}
+function toUserWordBook()
+{
+  window.location.href = 'userwordbook.html?' + user_name;
 }

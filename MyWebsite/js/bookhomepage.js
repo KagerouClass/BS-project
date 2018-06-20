@@ -18,6 +18,10 @@ var user_name = "";
     }
   }); // end of document ready
 })(jQuery); // end of jQuery name space
+function toUserWordBook()
+{
+  window.location.href = 'userwordbook.html?' + user_name;
+}
 function toWordsReview()
 {
   window.location.href = 'wordsreview.html?' + user_name;

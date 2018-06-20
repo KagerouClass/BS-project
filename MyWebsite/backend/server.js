@@ -84,6 +84,16 @@ function handle(data, res)
           }
           else
           {
+            querySentence = 'CREATE TABLE \`mywordbook_user\`.\`'+user_name+'_book\` ('+
+              '\`wordID\` INT NOT NULL,'+
+              '\`word\` VARCHAR(255) NOT NULL,'+
+              '\`meanning\` VARCHAR(255) NOT NULL,'+
+              'PRIMARY KEY (\`wordID\`),'+
+              'UNIQUE INDEX \`wordID_UNIQUE\` (\`wordID\` ASC) VISIBLE,'+
+              'UNIQUE INDEX \`word_UNIQUE\` (\`word\` ASC) VISIBLE);';
+                connection.query(querySentence, function (error, results, fields) {
+                  if (error) throw error;
+                });
             querySentence = 'SELECT count(1) as count FROM user_information';
             connection.query(querySentence, function (error, results, fields) {
               if (error) throw error;

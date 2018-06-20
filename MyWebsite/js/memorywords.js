@@ -34,3 +34,7 @@ function toProcess()
 {
   window.location.href = 'process.html?' + user_name;
 }
+function toUserWordBook()
+{
+  window.location.href = 'userwordbook.html?' + user_name;
+}

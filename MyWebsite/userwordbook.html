@@ -16,12 +16,12 @@
         <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">My Word Book</a>
           <ul class="right hide-on-med-and-down">
             <li>
-              <a href="" class="breadcrumb">托福单词</a>
+              <a href="#" class="breadcrumb">个人单词本</a>
             </li>
           </ul>
 
           <ul id="nav-mobile" class="side-nav">
-            <li><a href="" class="breadcrumb">托福单词</a></li>
+            <li><a href="#" class="breadcrumb">个人单词本</a></li>
           </ul>
         
           <!--↓侧边导航-->
@@ -34,8 +34,8 @@
               <div id="user_name"><span class="white-text name">蔡展璋</span></div>
               <!--<div id="email"><span class="white-text email">czz861924@gmail.com</span></div>-->
             </div></li>
-            <li><a class="waves-effect" href="javascript:toBookHomepage();">返回选择单词本</a></li>
-            <li><a class="waves-effect" href="javascript:toUserWordBook();">自定义单词本</a></li>
+            <li><a class="waves-effect" href="javascript:toBookHomepage();">单词背诵</a></li>
+            <li><a class="waves-effect" href="">自定义单词本</a></li>
             <li><div class="divider"></div></li>
             <li><a class="waves-effect" href="javascript:toWordsReview();">复习</a></li>
             <li><a class="waves-effect" href="javascript:toTest();">测试</a></li>
@@ -47,45 +47,22 @@
       </nav>
     </header> 
     <main>
-      <br><br>
+      <br><br><br><br><br><br><br>
       <div class="row">
-        <div class="col s10 offset-s1">
-          <div class="card red lighten-5">
-            <div class="card-content black-text">
-              <div class="row">
-                  <h3 class="valign">prosperity</h3>
-              </div>
-            </div>
-            <div class="row">
-              <div class="card-action">
-                <a class="waves-effect waves-light btn-large"><span style="text-transform:lowercase;">vt.使肥沃； 使受孕； 施肥</span></a>
-              </div>
-            </div>
-            <div class="row">
-              <div class="card-action">
-                <a class="waves-effect waves-light btn-large"><span style="text-transform:lowercase;">adj. 可逆的(双向的,回行的,可反转的)</span></a>
-              </div>
-            </div>
-            <div class="row">
-              <div class="card-action">
-                <a class="waves-effect waves-light btn-large"><span style="text-transform:lowercase;">n. 繁荣,兴旺</span></a>
-              </div>
-            </div>
-            <div class="row">
-              <div class="card-action">
-                <a class="waves-effect waves-light btn-large"><span style="text-transform:lowercase;">n. 虔诚,祈祷,献身,奉献</span></a>
-              </div>
-            </div>
-            <div class="row">
-                <div class="card-action">
-                  <h3 class="valign">0 / 40</h3>
-                  <br><br><br>
-                </div>
-              </div>
+        <div class="col s12 m6 l6 offset-s2 offset-m3 offset-l4">
+          查询单词:
+          <div class="input-field inline">
+            <input id="email" type="email" class="validate">
+            <label for="email" data-error="wrong" data-success="right">输入欲查询单词</label>
           </div>
         </div>
       </div>
-      <br><br>
+      <div class="row">
+        <div class="col s12 m6 l6 offset-s4 offset-m4 offset-l5">
+          <a class="waves-effect waves-light btn"><i class="material-icons right">search</i>按钮</a>
+        </div>
+      </div>
+      <br><br><br><br><br><br><br>
     </main>
     <footer class="page-footer orange">
       <div class="container">
@@ -108,6 +85,6 @@
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="js/materialize.js"></script>
     <script src="js/init.js"></script>
-    <script src="js/memorywords.js"></script>
+    <script src="js/userwordbook.js"></script>
   </body>
 </html>
