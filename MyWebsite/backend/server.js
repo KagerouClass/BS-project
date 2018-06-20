@@ -1,7 +1,10 @@
+//first import everything we need
 var http        = require('http');
 var querystring = require('querystring');
 var mysql       = require('mysql');
 var fs          = require('fs');
+
+//then get the word list
 var wordMapObj = new Map();
 var file = './wordlist/TOEFL_word_list.json';
 var request = JSON.parse(fs.readFileSync(file));
@@ -10,6 +13,8 @@ for (i in request){
   var y = request[i].explanation;
   wordMapObj.set(x,y);
 }
+
+//connect to database
 var user_name;
 var password;
 var querySentence; 
@@ -22,8 +27,8 @@ var connection = mysql.createConnection({
   database : 'mywordbook_user'
 });
 connection.connect();
-//start the server
 
+//server function
 function handle(data, res)
 {
   if(data[1]=="login_req") 
@@ -128,9 +133,28 @@ function handle(data, res)
       }
     });  
   }
+  else if(data[1] == "wordSearch_req") 
+  {
+    var word = data[2];
+    var explanation = wordMapObj.get(decodeURI(word));
+    if(explanation === undefined)
+    {
+      res.writeHead(200, {'Content-Type': 'application/json'});
+      res.end('successSearch_jsonpCallback(' + JSON.stringify("word_does_not_exit")+ ')');
+    }
+    else
+    {
+      res.writeHead(200, {'Content-Type': 'application/json'});
+      res.end('successSearch_jsonpCallback(' + JSON.stringify(explanation)+ ')');
+    }
+  }
 }
+
+//start the server
 http.createServer((req, res) =>
 {
   handle(req.url.split('&'), res);
 }).listen(5426);
+
+//declare that the server is up
 console.log('Server running at http://127.0.0.1:5426/');

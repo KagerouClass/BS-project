@@ -52,14 +52,19 @@
         <div class="col s12 m6 l6 offset-s2 offset-m3 offset-l4">
           查询单词:
           <div class="input-field inline">
-            <input id="email" type="email" class="validate">
-            <label for="email" data-error="wrong" data-success="right">输入欲查询单词</label>
+            <input id="word" type="text" class="validate">
+            <label for="word">输入欲查询单词</label>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col s12 m6 l6 offset-s4 offset-m4 offset-l5">
-          <a class="waves-effect waves-light btn"><i class="material-icons right">search</i>按钮</a>
+          <input type="submit" id="login-button" class="waves-effect waves-light btn" value="搜寻单词" name="submit" onclick="return searchWord(word);"/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12 m6 l6 offset-s4 offset-m4 offset-l5">
+          <div id="explanation"></div>
         </div>
       </div>
       <br><br><br><br><br><br><br>
