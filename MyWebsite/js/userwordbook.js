@@ -18,8 +18,91 @@ var explanation = "";
       if(document.getElementById("user_name"))
         document.getElementById("user_name").innerText = window.location.href.split('?')[1].split('=')[1];
     }
+    toPage(1);
   }); // end of document ready
 })(jQuery); // end of jQuery name space
+function toPage(pageNumber)
+{
+  var user_name = window.location.href.split('?')[1].split('=')[1];
+  var insertHtml = "";
+  if(pageNumber == 1)
+  {
+    insertHtml = "<ul class=\"pagination\">"+
+      "<li class=\"disabled\"><i class=\"material-icons\">chevron_left</i></a></li>"+
+      "<li class=\"active\"><a href=\"javascript:toPage(1);\">1</a></li>"+
+      "<li class=\"waves-effect\"><a href=\"javascript:toPage(2);\">2</a></li>"+
+      "<li class=\"waves-effect\"><a href=\"javascript:toPage(3);\">3</a></li>"+
+      "<li class=\"waves-effect\"><a href=\"javascript:toPage(4);\">4</a></li>"+
+      "<li class=\"waves-effect\"><a href=\"javascript:toPage(5);\">5</a></li>"+
+      "<li class=\"waves-effect\"><a href=\"javascript:toPage(2);\"><i class=\"material-icons\">chevron_right</i></a></li>"+
+      "</ul>";
+  }
+  else if(pageNumber == 2)
+  {
+    insertHtml = "<ul class=\"pagination\">"+
+      "<li class=\"waves-effect\"><a href=\"javascript:toPage(1)\"><i class=\"material-icons\">chevron_left</i></a></li>"+
+      "<li class=\"waves-effect\"><a href=\"javascript:toPage(1);\">1</a></li>"+
+      "<li class=\"active\"><a href=\"javascript:toPage(2);\">2</a></li>"+
+      "<li class=\"waves-effect\"><a href=\"javascript:toPage(3);\">3</a></li>"+
+      "<li class=\"waves-effect\"><a href=\"javascript:toPage(4);\">4</a></li>"+
+      "<li class=\"waves-effect\"><a href=\"javascript:toPage(5);\">5</a></li>"+
+      "<li class=\"waves-effect\"><a href=\"javascript:toPage(3);\"><i class=\"material-icons\">chevron_right</i></a></li>"+
+      "</ul>";
+  }
+  else if(pageNumber == 3)
+  {
+    insertHtml = "<ul class=\"pagination\">"+
+      "<li class=\"waves-effect\"><a href=\"javascript:toPage(2)\"><i class=\"material-icons\">chevron_left</i></a></li>"+
+      "<li class=\"waves-effect\"><a href=\"javascript:toPage(1);\">1</a></li>"+
+      "<li class=\"waves-effect\"><a href=\"javascript:toPage(2);\">2</a></li>"+
+      "<li class=\"active\"><a href=\"javascript:toPage(3);\">3</a></li>"+
+      "<li class=\"waves-effect\"><a href=\"javascript:toPage(4);\">4</a></li>"+
+      "<li class=\"waves-effect\"><a href=\"javascript:toPage(5);\">5</a></li>"+
+      "<li class=\"waves-effect\"><a href=\"javascript:toPage(4);\"><i class=\"material-icons\">chevron_right</i></a></li>"+
+      "</ul>";
+  }
+  else if(pageNumber == 4)
+  {
+    insertHtml = "<ul class=\"pagination\">"+
+      "<li class=\"waves-effect\"><a href=\"javascript:toPage(3)\"><i class=\"material-icons\">chevron_left</i></a></li>"+
+      "<li class=\"waves-effect\"><a href=\"javascript:toPage(1);\">1</a></li>"+
+      "<li class=\"waves-effect\"><a href=\"javascript:toPage(2);\">2</a></li>"+
+      "<li class=\"waves-effect\"><a href=\"javascript:toPage(3);\">3</a></li>"+
+      "<li class=\"active\"><a href=\"javascript:toPage(4);\">4</a></li>"+
+      "<li class=\"waves-effect\"><a href=\"javascript:toPage(5);\">5</a></li>"+
+      "<li class=\"waves-effect\"><a href=\"javascript:toPage(5);\"><i class=\"material-icons\">chevron_right</i></a></li>"+
+      "</ul>";
+  }
+  else if(pageNumber == 5)
+  {
+    insertHtml = "<ul class=\"pagination\">"+
+      "<li class=\"waves-effect\"><a href=\"javascript:toPage(4)\"><i class=\"material-icons\">chevron_left</i></a></li>"+
+      "<li class=\"waves-effect\"><a href=\"javascript:toPage(1);\">1</a></li>"+
+      "<li class=\"waves-effect\"><a href=\"javascript:toPage(2);\">2</a></li>"+
+      "<li class=\"waves-effect\"><a href=\"javascript:toPage(3);\">3</a></li>"+
+      "<li class=\"waves-effect\"><a href=\"javascript:toPage(4);\">4</a></li>"+
+      "<li class=\"active\"><a href=\"javascript:toPage(5);\">5</a></li>"+
+      "<li class=\"disabled\"><i class=\"material-icons\">chevron_right</i></a></li>"+
+      "</ul>";
+  }
+  document.getElementById("page").innerHTML = insertHtml;
+  $.ajax({
+    //type: "post",
+    data: "book_req&" + user_name + "&" + pageNumber,
+    url: 'http://127.0.0.1:5426',
+    async:false,
+    dataType: "jsonp",
+    jsonp: "callback",
+    jsonpCallback: "bookSuccess_jsonpCallback"
+  }).done(function (res) 
+  {
+    if(res == "success")
+    {
+      //console.log("success!");
+    }
+  });
+    
+}
 function toBookHomepage()
 {
   window.location.href = 'bookhomepage.html?' + user_name;

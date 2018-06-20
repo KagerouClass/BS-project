@@ -179,6 +179,14 @@ function handle(data, res)
       }
     });
   }
+  else if(data[1] == "book_req") 
+  {
+    var user_name = data[2];
+    var pageNumber = data[3];
+    res.writeHead(200, {'Content-Type': 'application/json'});
+    res.end('bookSuccess_jsonpCallback(' + JSON.stringify("success")+ ')');
+    
+  }
 }
 
 //start the server
