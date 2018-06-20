@@ -26,10 +26,6 @@ function toWordsReview()
 {
   window.location.href = 'wordsreview.html?' + user_name;
 }
-function toTest()
-{
-  window.location.href = 'test.html?' + user_name;
-}
 function toProcess()
 {
   window.location.href = 'process.html?' + user_name;
