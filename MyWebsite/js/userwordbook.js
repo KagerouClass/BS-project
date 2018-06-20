@@ -3,6 +3,8 @@ $('.button-collapse').sideNav({
   }
 );
 var user_name = "";
+var wordReadyAdd = "";
+var explanation = "";
 (function($){
   $(function(){
 
@@ -65,7 +67,11 @@ function searchWord(word){
         }
         else
         {
+          var insertHtml = "<input type=\"submit\" id=\"login-button\" class=\"waves-effect waves-light btn\" value=\"是否将该单词加入词汇本？\" name=\"submit\" onclick=\"return addWordToBook();\"/>"
+          wordReadyAdd = document.getElementById("word").value;
+          explanation  = res;
           document.getElementById("explanation").innerText = res;
+          document.getElementById("confirmButton").innerHTML = insertHtml;
         }
       });
       return true;
@@ -74,4 +80,28 @@ function searchWord(word){
   {
       return false;
   }
+}
+function addWordToBook(){
+  var user_name = window.location.href.split('?')[1].split('=')[1];
+  $.ajax({
+    //type: "post",
+    data: "addWordToBook_req&" + user_name + "&" + wordReadyAdd + "&" + explanation,
+    url: 'http://127.0.0.1:5426',
+    async:false,
+    dataType: "jsonp",
+    jsonp: "callback",
+    jsonpCallback: "successAddToBook_jsonpCallback",
+  }).done(function (res) 
+  {
+    if(res == "success")
+    {
+      alert("该单词已经成功加入单词本中");
+      window.location.href = 'userwordbook.html?user_name=' + user_name;
+    }
+    else if(res == "duplicate")
+    {
+      alert("该单词已经存在于单词本中");
+    }
+  });
+  return true;
 }

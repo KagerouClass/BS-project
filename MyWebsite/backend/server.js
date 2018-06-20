@@ -148,6 +148,37 @@ function handle(data, res)
       res.end('successSearch_jsonpCallback(' + JSON.stringify(explanation)+ ')');
     }
   }
+  else if(data[1] == "addWordToBook_req") 
+  {
+    user_name = data[2];
+    var wordReadyToAdd  = data[3];
+    var explanation     = data[4];
+    querySentence = 'SELECT word FROM '+user_name+'_book WHERE word=\''+wordReadyToAdd+'\'';
+    connection.query(querySentence, function (error, results, fields) {
+      if (error) throw error;
+      if(results[0])
+      {
+        if(results[0].word == wordReadyToAdd)
+        {
+          res.writeHead(200, {'Content-Type': 'application/json'});
+          res.end('successAddToBook_jsonpCallback(' + JSON.stringify('duplicate')+ ')');
+        }
+      }
+      else
+      {
+        querySentence = 'SELECT count(1) as count FROM ' +user_name+'_book';
+        connection.query(querySentence, function (error, results, fields) {
+          if (error) throw error;
+          querySentence = 'insert into '+user_name+'_book values (\''+(results[0].count+1)+'\','+'\''+decodeURI(wordReadyToAdd)+'\','+'\''+decodeURI(explanation)+'\')';
+          connection.query(querySentence, function (error, results, fields) {
+            if (error) throw error;
+            res.writeHead(200, {'Content-Type': 'application/json'});
+            res.end('successAddToBook_jsonpCallback(' + JSON.stringify("success")+ ')');
+          });
+        });
+      }
+    });
+  }
 }
 
 //start the server
