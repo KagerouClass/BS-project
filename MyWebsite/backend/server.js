@@ -1,15 +1,18 @@
-var nextpage = 
-'<html><head></head>' +
-'<body>' +
-'<a href="D:/GitHub/BS-project/MyWebsite/register.html" id="register">这里</a>' +
-'</body></html>';
-
-var http = require('http');
+var http        = require('http');
 var querystring = require('querystring');
+var mysql       = require('mysql');
+var fs          = require('fs');
+var wordMapObj = new Map();
+var file = './wordlist/TOEFL_word_list.json';
+var request = JSON.parse(fs.readFileSync(file));
+for (i in request){
+  var x = request[i].word;
+  var y = request[i].explanation;
+  wordMapObj.set(x,y);
+}
 var user_name;
 var password;
 var querySentence; 
-var mysql      = require('mysql');
 var connection = mysql.createConnection({
   host     : 'localhost',
   user     : '3150105426',
