@@ -25,67 +25,56 @@ function toPage(pageNumber)
 {
   var user_name = window.location.href.split('?')[1].split('=')[1];
   var insertHtml = "";
-  if(pageNumber == 1)
+  var totalPage = 0;
+  var totalWord = 0;
+  $.ajax({
+    //type: "post",
+    data: "bookWordNum_req&" + user_name,
+    url: 'http://127.0.0.1:5426',
+    async:false,
+    dataType: "jsonp",
+    jsonp: "callback",
+    jsonpCallback: "bookWordNumSuccess_jsonpCallback"
+  }).done(function (res) 
   {
-    insertHtml = "<ul class=\"pagination\">"+
-      "<li class=\"disabled\"><i class=\"material-icons\">chevron_left</i></a></li>"+
-      "<li class=\"active\"><a href=\"javascript:toPage(1);\">1</a></li>"+
-      "<li class=\"waves-effect\"><a href=\"javascript:toPage(2);\">2</a></li>"+
-      "<li class=\"waves-effect\"><a href=\"javascript:toPage(3);\">3</a></li>"+
-      "<li class=\"waves-effect\"><a href=\"javascript:toPage(4);\">4</a></li>"+
-      "<li class=\"waves-effect\"><a href=\"javascript:toPage(5);\">5</a></li>"+
-      "<li class=\"waves-effect\"><a href=\"javascript:toPage(2);\"><i class=\"material-icons\">chevron_right</i></a></li>"+
-      "</ul>";
-  }
-  else if(pageNumber == 2)
-  {
-    insertHtml = "<ul class=\"pagination\">"+
-      "<li class=\"waves-effect\"><a href=\"javascript:toPage(1)\"><i class=\"material-icons\">chevron_left</i></a></li>"+
-      "<li class=\"waves-effect\"><a href=\"javascript:toPage(1);\">1</a></li>"+
-      "<li class=\"active\"><a href=\"javascript:toPage(2);\">2</a></li>"+
-      "<li class=\"waves-effect\"><a href=\"javascript:toPage(3);\">3</a></li>"+
-      "<li class=\"waves-effect\"><a href=\"javascript:toPage(4);\">4</a></li>"+
-      "<li class=\"waves-effect\"><a href=\"javascript:toPage(5);\">5</a></li>"+
-      "<li class=\"waves-effect\"><a href=\"javascript:toPage(3);\"><i class=\"material-icons\">chevron_right</i></a></li>"+
-      "</ul>";
-  }
-  else if(pageNumber == 3)
-  {
-    insertHtml = "<ul class=\"pagination\">"+
-      "<li class=\"waves-effect\"><a href=\"javascript:toPage(2)\"><i class=\"material-icons\">chevron_left</i></a></li>"+
-      "<li class=\"waves-effect\"><a href=\"javascript:toPage(1);\">1</a></li>"+
-      "<li class=\"waves-effect\"><a href=\"javascript:toPage(2);\">2</a></li>"+
-      "<li class=\"active\"><a href=\"javascript:toPage(3);\">3</a></li>"+
-      "<li class=\"waves-effect\"><a href=\"javascript:toPage(4);\">4</a></li>"+
-      "<li class=\"waves-effect\"><a href=\"javascript:toPage(5);\">5</a></li>"+
-      "<li class=\"waves-effect\"><a href=\"javascript:toPage(4);\"><i class=\"material-icons\">chevron_right</i></a></li>"+
-      "</ul>";
-  }
-  else if(pageNumber == 4)
-  {
-    insertHtml = "<ul class=\"pagination\">"+
-      "<li class=\"waves-effect\"><a href=\"javascript:toPage(3)\"><i class=\"material-icons\">chevron_left</i></a></li>"+
-      "<li class=\"waves-effect\"><a href=\"javascript:toPage(1);\">1</a></li>"+
-      "<li class=\"waves-effect\"><a href=\"javascript:toPage(2);\">2</a></li>"+
-      "<li class=\"waves-effect\"><a href=\"javascript:toPage(3);\">3</a></li>"+
-      "<li class=\"active\"><a href=\"javascript:toPage(4);\">4</a></li>"+
-      "<li class=\"waves-effect\"><a href=\"javascript:toPage(5);\">5</a></li>"+
-      "<li class=\"waves-effect\"><a href=\"javascript:toPage(5);\"><i class=\"material-icons\">chevron_right</i></a></li>"+
-      "</ul>";
-  }
-  else if(pageNumber == 5)
-  {
-    insertHtml = "<ul class=\"pagination\">"+
-      "<li class=\"waves-effect\"><a href=\"javascript:toPage(4)\"><i class=\"material-icons\">chevron_left</i></a></li>"+
-      "<li class=\"waves-effect\"><a href=\"javascript:toPage(1);\">1</a></li>"+
-      "<li class=\"waves-effect\"><a href=\"javascript:toPage(2);\">2</a></li>"+
-      "<li class=\"waves-effect\"><a href=\"javascript:toPage(3);\">3</a></li>"+
-      "<li class=\"waves-effect\"><a href=\"javascript:toPage(4);\">4</a></li>"+
-      "<li class=\"active\"><a href=\"javascript:toPage(5);\">5</a></li>"+
-      "<li class=\"disabled\"><i class=\"material-icons\">chevron_right</i></a></li>"+
-      "</ul>";
-  }
-  document.getElementById("page").innerHTML = insertHtml;
+    if(res == "no-word")
+    {
+      insertHtml = "<ul class=\"pagination\">"+
+          "<li class=\"disabled\"><i class=\"material-icons\">chevron_left</i></a></li>"+
+          "<li class=\"disabled\"><i class=\"material-icons\">chevron_right</i></a></li>"+
+          "</ul>";
+      document.getElementById("page").innerHTML = insertHtml;
+      alert("现在单词本中没有单词！");
+    }
+    else
+    {
+      if(res%5==0)
+        totalPage = res/5;
+      else
+        totalPage = (res-res%5)/5+1;
+      totalWord = res;
+      insertHtml = "<ul class=\"pagination\">";
+      if(pageNumber == 1)
+        insertHtml += "<li class=\"disabled\"><i class=\"material-icons\">chevron_left</i></a></li>";
+      else
+        insertHtml += "<li class=\"waves-effect\"><a href=\"javascript:toPage("+(pageNumber-1)+");\"><i class=\"material-icons\">chevron_left</i></a></li>";
+      var i = 1;
+      for(i = 1; i < pageNumber; ++i)
+        insertHtml += "<li class=\"waves-effect\"><a href=\"javascript:toPage("+i+");\">"+i+"</a></li>";
+      insertHtml += "<li class=\"active\"><a href=\"javascript:toPage("+pageNumber+");\">"+pageNumber+"</a></li>";
+      ++i;
+      for(; i <= totalPage; ++i)
+        insertHtml += "<li class=\"waves-effect\"><a href=\"javascript:toPage("+i+");\">"+i+"</a></li>";
+      if(pageNumber == totalPage)
+        insertHtml += "<li class=\"disabled\"><i class=\"material-icons\">chevron_right</i></a></li>";
+      else
+        insertHtml += "<li class=\"waves-effect\"><a href=\"javascript:toPage("+(pageNumber+1)+");\"><i class=\"material-icons\">chevron_right</i></a></li>";
+      document.getElementById("page").innerHTML = insertHtml; 
+        
+      
+    }
+  });
+  
   $.ajax({
     //type: "post",
     data: "book_req&" + user_name + "&" + pageNumber,

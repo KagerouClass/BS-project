@@ -187,6 +187,25 @@ function handle(data, res)
     res.end('bookSuccess_jsonpCallback(' + JSON.stringify("success")+ ')');
     
   }
+  else if(data[1] == "bookWordNum_req") 
+  {
+    var user_name = data[2];
+    querySentence = 'SELECT count(1) as count FROM ' +user_name+'_book';
+    connection.query(querySentence, function (error, results, fields) {
+      if (error) throw error;
+      if(results[0].count == 0)
+      {
+        res.writeHead(200, {'Content-Type': 'application/json'});
+        res.end('bookWordNumSuccess_jsonpCallback(' + JSON.stringify("no-word")+ ')');
+      }
+      else
+      {
+        res.writeHead(200, {'Content-Type': 'application/json'});
+        res.end('bookWordNumSuccess_jsonpCallback(' + JSON.stringify(results[0].count)+ ')');
+      }
+    });
+    
+  }
 }
 
 //start the server
