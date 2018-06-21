@@ -183,8 +183,45 @@ function handle(data, res)
   {
     var user_name = data[2];
     var pageNumber = data[3];
-    res.writeHead(200, {'Content-Type': 'application/json'});
-    res.end('bookSuccess_jsonpCallback(' + JSON.stringify("success")+ ')');
+    var currentPageWordNumber = 0;
+    var response = "";
+    querySentence = 'SELECT count(1) as count FROM ' +user_name+'_book';
+    connection.query(querySentence, function (error, results, fields) {
+      if (error) throw error;
+      var totalPage = 0;
+      if(results[0].count%5==0)
+        totalPage = results[0].count/5;
+      else
+        totalPage = (results[0].count-results[0].count%5)/5+1;
+      if(totalPage == pageNumber)
+        currentPageWordNumber = results[0].count%5;
+      else
+        currentPageWordNumber = 5;
+      response += currentPageWordNumber;
+      
+        var i= 1;
+        querySentence = 'SELECT word FROM ' +user_name+'_book where wordID between '+(1+(pageNumber-1)*5)+' and '+(currentPageWordNumber+(pageNumber-1)*5);
+        connection.query(querySentence, function (error, results, fields) {
+          if (error) throw error;
+          for(var i = 0; i < currentPageWordNumber; ++i)
+          {
+            response += "&";
+            response += results[i].word;
+          } 
+          querySentence = 'SELECT meanning FROM ' +user_name+'_book where wordID between '+(1+(pageNumber-1)*5)+' and '+(currentPageWordNumber+(pageNumber-1)*5);
+          connection.query(querySentence, function (error, results, fields) {
+            if (error) throw error;
+            for(var i = 0; i < currentPageWordNumber; ++i)
+            { 
+              response += "&";
+              response += results[i].meanning;
+            }
+            res.writeHead(200, {'Content-Type': 'application/json'});
+            res.end('bookSuccess_jsonpCallback(' + JSON.stringify(response)+ ')');
+          });
+        });
+        
+    });
     
   }
   else if(data[1] == "bookWordNum_req") 

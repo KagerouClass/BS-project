@@ -70,26 +70,23 @@ function toPage(pageNumber)
       else
         insertHtml += "<li class=\"waves-effect\"><a href=\"javascript:toPage("+(pageNumber+1)+");\"><i class=\"material-icons\">chevron_right</i></a></li>";
       document.getElementById("page").innerHTML = insertHtml; 
-        
+      $.ajax({
+        //type: "post",
+        data: "book_req&" + user_name + "&" + pageNumber,
+        url: 'http://127.0.0.1:5426',
+        async:false,
+        dataType: "jsonp",
+        jsonp: "callback",
+        jsonpCallback: "bookSuccess_jsonpCallback"
+      }).done(function (res) 
+      {
+        console.log(res);
+      });  
       
     }
   });
   
-  $.ajax({
-    //type: "post",
-    data: "book_req&" + user_name + "&" + pageNumber,
-    url: 'http://127.0.0.1:5426',
-    async:false,
-    dataType: "jsonp",
-    jsonp: "callback",
-    jsonpCallback: "bookSuccess_jsonpCallback"
-  }).done(function (res) 
-  {
-    if(res == "success")
-    {
-      //console.log("success!");
-    }
-  });
+  
     
 }
 function toBookHomepage()
