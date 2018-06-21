@@ -80,7 +80,51 @@ function toPage(pageNumber)
         jsonpCallback: "bookSuccess_jsonpCallback"
       }).done(function (res) 
       {
-        console.log(res);
+        var response = new String(res);
+        var wordGot = new Array(5);
+        var explanationGot = new Array(5);
+        var wordNum = parseInt(response.substr(0));
+        var index = 0;
+        for(var i=0; i < wordNum; ++i)
+        {
+          index = response.indexOf('&', index)+1;
+          wordGot[i] = response.substr(index, response.indexOf('&', index)-index);
+          console.log(wordGot[i]);
+        }
+        for(var i=0; i < wordNum; ++i)
+        {
+          if(i != wordNum - 1)
+          {
+            index = response.indexOf('&', index)+1;
+            explanationGot[i] = response.substr(index, response.indexOf('&', index)-index);
+            console.log(explanationGot[i]);
+          }
+          else
+          {
+            index = response.indexOf('&', index)+1;
+            explanationGot[i] = response.substr(index, response.length-index);
+            console.log(explanationGot[i]);
+          }
+        }
+        var i=0
+        for(i=0; i < wordNum; ++i)
+        {
+          i++;
+          var word = "word-"+i.toString();
+          var explanation = "explanation-"+i.toString();
+          i--;
+          document.getElementById(`${word}`).innerHTML = wordGot[i];
+          document.getElementById(explanation).innerHTML = explanationGot[i];
+        }
+        for(; i < 5; ++i)
+        {
+          i++;
+          var word = "word-"+i.toString();
+          var explanation = "explanation-"+i.toString();
+          i--;
+          document.getElementById(`${word}`).innerHTML = "";
+          document.getElementById(explanation).innerHTML = "";
+        }
       });  
       
     }
@@ -170,6 +214,7 @@ function addWordToBook(){
     else if(res == "duplicate")
     {
       alert("该单词已经存在于单词本中");
+      window.location.href = 'userwordbook.html?user_name=' + user_name;
     }
   });
   return true;
