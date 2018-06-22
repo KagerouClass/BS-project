@@ -236,7 +236,7 @@ function handle(data, res)
       else
         totalPage = (results[0].count-results[0].count%5)/5+1;
       if(totalPage == pageNumber)
-        currentPageWordNumber = results[0].count%5;
+        currentPageWordNumber = results[0].count-5*(totalPage-1);
       else
         currentPageWordNumber = 5;
       response += currentPageWordNumber;
