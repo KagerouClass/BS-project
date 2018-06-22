@@ -5,13 +5,18 @@ var mysql       = require('mysql');
 var fs          = require('fs');
 
 //then get the word list
+var testWordNum = 5;
 var wordMapObj = new Map();
+var word_ID_map = new Map();
 var file = './wordlist/TOEFL_word_list.json';
 var request = JSON.parse(fs.readFileSync(file));
+var loopNum = 0;
 for (i in request){
   var x = request[i].word;
   var y = request[i].explanation;
   wordMapObj.set(x,y);
+  word_ID_map.set(loopNum,x);
+  loopNum++;
 }
 
 //connect to database
@@ -28,6 +33,43 @@ var connection = mysql.createConnection({
 });
 connection.connect();
 
+//status
+var isTesting = false;
+var isReviewing = false;
+var isLearning = false;
+var currentTestAtIndex = 0;
+var testScore = 0;
+var testWordList = new Array(testWordNum);
+var testWordAns  = new Array(testWordNum);
+var testRightAns = new Array(testWordNum);
+
+//randomNumGen
+function randomNum(minNum,maxNum)
+{ 
+  switch(arguments.length)
+  { 
+      case 1: 
+          return parseInt(Math.random()*minNum+1,10); 
+      break; 
+      case 2: 
+          return parseInt(Math.random()*(maxNum-minNum+1)+minNum,10); 
+      break; 
+          default: 
+              return 0; 
+          break; 
+  } 
+} 
+function resetUserTestStudyReview()
+{
+  isTesting = false;
+  isReviewing = false;
+  isLearning = false;
+  currentTestAtIndex = 0;
+  testScore = 0;
+  testWordList = new Array(testWordNum);
+  testWordAns  = new Array(testWordNum);
+  testRightAns = new Array(testWordNum);
+}
 //server function
 function handle(data, res)
 {
@@ -36,7 +78,7 @@ function handle(data, res)
     user_name = data[2];
     password  = data[3];
     querySentence = 'SELECT user_name,password,email FROM user_information WHERE user_name=\''+user_name+'\'';
-    var isLegalUser = false;
+    resetUserTestStudyReview();
     connection.query(querySentence, function (error, results, fields) {
       if (error) throw error;
       if(results[0])
@@ -243,6 +285,63 @@ function handle(data, res)
     });
     
   }
+  else if(data[1] == "test_req") 
+  {
+    var user_name = data[2];
+    var page_num  = data[3];
+    var previous_ans = data[4];
+    if(previous_ans == testRightAns[page_num-1])
+    {
+      testScore++;
+    }
+    if(page_num == 0)
+    {
+      isTesting = false;
+      testScore = 0;
+      testWordList = new Array(testWordNum);
+      testWordAns  = new Array(testWordNum);
+      testRightAns = new Array(testWordNum);
+    }
+    if(page_num==testWordNum)
+    {
+      res.writeHead(200, {'Content-Type': 'application/json'});
+      res.end('testPageGetSuccess_jsonpCallback(' +JSON.stringify(testScore)+ ')');
+    }
+    else
+    {
+      if(!isTesting)
+      {
+        for(var i = 0; i < testWordNum; ++i)
+        {
+          var ID = randomNum(0, 4319);
+          testWordList[i] = word_ID_map.get(ID);
+          testWordAns[i] = new Array(4);
+          var rightAnsIndex = randomNum(0, 3);
+          testWordAns[i][rightAnsIndex]=wordMapObj.get(word_ID_map.get(ID));
+          for(var j=0; j < 4; j++)
+          {
+            if(j != rightAnsIndex)
+            {
+              testWordAns[i][j]=wordMapObj.get(word_ID_map.get(randomNum(0, 4319)));
+            }
+          }
+          testRightAns[i] = rightAnsIndex;
+        }
+        isTesting = true;
+      }
+      var response = "";
+      response += testWordList[page_num] + "&";
+      for(var i = 0; i < 4; ++i)
+      {
+        response += testWordAns[page_num][i] + "&";
+      }
+      response += testRightAns[page_num];
+      res.writeHead(200, {'Content-Type': 'application/json'});
+      res.end('testPageGetSuccess_jsonpCallback(' +JSON.stringify(response)+ ')');
+      
+    }
+    
+  } 
 }
 
 //start the server
