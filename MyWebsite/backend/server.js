@@ -306,6 +306,11 @@ function handle(data, res)
     {
       res.writeHead(200, {'Content-Type': 'application/json'});
       res.end('testPageGetSuccess_jsonpCallback(' +JSON.stringify(testScore)+ ')');
+      isTesting = false;
+      testScore = 0;
+      testWordList = new Array(testWordNum);
+      testWordAns  = new Array(testWordNum);
+      testRightAns = new Array(testWordNum);
     }
     else
     {

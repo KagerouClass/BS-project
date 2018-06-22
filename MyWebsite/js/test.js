@@ -58,7 +58,7 @@ function getTestPage()
     test_current_page++;
     if(response.indexOf('&')==-1)
     {
-      document.getElementById("content").innerHTML = "<h3>本次测试得分为"+res+"</h3>";
+      document.getElementById("content").innerHTML = "<h3>本次测试得分为"+res+"</h3>"+"<a href=\"javascript:toBookHomepage();\" id=\"download-button\" class=\"btn-large waves-effect waves-light orange\">返回主页</a>\"";
     }
     else
     {
