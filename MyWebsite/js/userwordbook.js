@@ -114,7 +114,7 @@ function toPage(pageNumber)
           var explanation = "explanation-"+i.toString();
           i--;
           document.getElementById(`${word}`).innerHTML = wordGot[i];
-          document.getElementById(explanation).innerHTML = explanationGot[i];
+          document.getElementById(explanation).innerHTML = "<p>"+explanationGot[i]+"</p>";
         }
         for(; i < 5; ++i)
         {
@@ -122,8 +122,8 @@ function toPage(pageNumber)
           var word = "word-"+i.toString();
           var explanation = "explanation-"+i.toString();
           i--;
-          document.getElementById(`${word}`).innerHTML = "";
-          document.getElementById(explanation).innerHTML = "";
+          document.getElementById(`${word}`).innerText = "";
+          document.getElementById(explanation).innerText = "";
         }
       });  
       
