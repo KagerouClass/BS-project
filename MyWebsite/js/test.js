@@ -5,6 +5,8 @@ $('.button-collapse').sideNav({
 var user_name = "";
 var test_current_page = 0;
 var previous_ans = -1;
+var rightAnsNum = 0;
+var choice = new Array(4);
 (function($){
   $(function(){
 
@@ -53,8 +55,8 @@ function getTestPage()
     var index = 0;
     var response = new String(res);
     var word = "";
-    var choice = new Array(4);
-    var rightAnsNum = 0;
+    choice = new Array(4);
+    
     test_current_page++;
     if(response.indexOf('&')==-1)
     {
@@ -83,5 +85,12 @@ function getTestPage()
 function setAns(ans)
 {
   previous_ans=ans;
+  if(rightAnsNum == ans)
+  {
+  }
+  else
+  {
+    alert("很遗憾，本单词正确意思为："+choice[rightAnsNum]);
+  }
   getTestPage();
 }

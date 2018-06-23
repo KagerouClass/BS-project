@@ -141,9 +141,16 @@ function handle(data, res)
               'PRIMARY KEY (\`wordID\`),'+
               'UNIQUE INDEX \`wordID_UNIQUE\` (\`wordID\` ASC) VISIBLE,'+
               'UNIQUE INDEX \`word_UNIQUE\` (\`word\` ASC) VISIBLE);';
-                connection.query(querySentence, function (error, results, fields) {
-                  if (error) throw error;
-                });
+            connection.query(querySentence, function (error, results, fields) {
+              if (error) throw error;
+            });
+            querySentence = 'CREATE TABLE `mywordbook_user`.`'+user_name+'_worddate` ('+
+              '`process` INT NOT NULL,'+
+              '`date` DATE NOT NULL,'+
+              'PRIMARY KEY (`process`));';
+            connection.query(querySentence, function (error, results, fields) {
+              if (error) throw error;
+            });
             querySentence = 'SELECT count(1) as count FROM user_information';
             connection.query(querySentence, function (error, results, fields) {
               if (error) throw error;
@@ -410,11 +417,87 @@ function handle(data, res)
         querySentence = 'UPDATE user_process SET wordCompleteNum='+(wordCompleteNum+10)+' WHERE UID='+'\''+UID+'\'';
         connection.query(querySentence, function (error, results, fields) {
           if (error) throw error;
-          res.writeHead(200, {'Content-Type': 'application/json'});
-          res.end('memoryCompleteSuccess_jsonpCallback(' +JSON.stringify("success")+ ')');
+          var date = new Date();
+          var nowMonth = date.getMonth() + 1;
+          var strDate = date.getDate();
+          var seperator = "-";
+          if (nowMonth >= 1 && nowMonth <= 9) {
+            nowMonth = "0" + nowMonth;
+          }
+          if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+          }
+          var nowDate = date.getFullYear() + seperator + nowMonth + seperator + strDate;
+          querySentence = 'INSERT INTO '+user_name+'_worddate values ('+(wordCompleteNum+10)+', '+'\''+nowDate+'\')';
+          connection.query(querySentence, function (error, results, fields) {
+            if (error) throw error;
+            res.writeHead(200, {'Content-Type': 'application/json'});
+            res.end('memoryCompleteSuccess_jsonpCallback(' +JSON.stringify("success")+ ')');
+          });
         });
       });
     });
+  }
+  else if(data[1] == "review_req")
+  {
+    var user_name = data[2];
+    var page_num  = data[3];
+    var previous_ans = data[4];
+    if(previous_ans == testRightAns[page_num-1])
+    {
+      testScore++;
+    }
+    if(page_num == 0)
+    {
+      isTesting = false;
+      testScore = 0;
+      testWordList = new Array(testWordNum);
+      testWordAns  = new Array(testWordNum);
+      testRightAns = new Array(testWordNum);
+    }
+    if(page_num==testWordNum)
+    {
+      res.writeHead(200, {'Content-Type': 'application/json'});
+      res.end('reviewPageGetSuccess_jsonpCallback(' +JSON.stringify(testScore)+ ')');
+      isTesting = false;
+      testScore = 0;
+      testWordList = new Array(testWordNum);
+      testWordAns  = new Array(testWordNum);
+      testRightAns = new Array(testWordNum);
+    }
+    else
+    {
+      if(!isTesting)
+      {
+        for(var i = 0; i < testWordNum; ++i)
+        {
+          var ID = randomNum(0, 4319);
+          testWordList[i] = word_ID_map.get(ID);
+          testWordAns[i] = new Array(4);
+          var rightAnsIndex = randomNum(0, 3);
+          testWordAns[i][rightAnsIndex]=wordMapObj.get(word_ID_map.get(ID));
+          for(var j=0; j < 4; j++)
+          {
+            if(j != rightAnsIndex)
+            {
+              testWordAns[i][j]=wordMapObj.get(word_ID_map.get(randomNum(0, 4319)));
+            }
+          }
+          testRightAns[i] = rightAnsIndex;
+        }
+        isTesting = true;
+      }
+      var response = "";
+      response += testWordList[page_num] + "&";
+      for(var i = 0; i < 4; ++i)
+      {
+        response += testWordAns[page_num][i] + "&";
+      }
+      response += testRightAns[page_num];
+      res.writeHead(200, {'Content-Type': 'application/json'});
+      res.end('reviewPageGetSuccess_jsonpCallback(' +JSON.stringify(response)+ ')');
+      
+    }
   }
 }
 
