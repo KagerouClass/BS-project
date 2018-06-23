@@ -147,11 +147,16 @@ function handle(data, res)
             querySentence = 'SELECT count(1) as count FROM user_information';
             connection.query(querySentence, function (error, results, fields) {
               if (error) throw error;
+              count = results[0].count;
               querySentence = 'insert into user_information values (\''+(results[0].count+1)+'\','+'\''+user_name+'\','+'\''+password+'\','+'\''+email+'\')';
                 connection.query(querySentence, function (error, results, fields) {
                   if (error) throw error;
-                  res.writeHead(200, {'Content-Type': 'application/json'});
-                  res.end('successConnect_jsonpCallback(' + JSON.stringify('success')+ ')');
+                  querySentence = 'insert into user_process values (\''+(count+1)+'\','+'\''+'0'+'\')';
+                  connection.query(querySentence, function (error, results, fields) {
+                    if (error) throw error;
+                    res.writeHead(200, {'Content-Type': 'application/json'});
+                    res.end('successConnect_jsonpCallback(' + JSON.stringify('success')+ ')');
+                  });
               });
             });
           }
@@ -347,6 +352,68 @@ function handle(data, res)
     }
     
   } 
+  else if(data[1] == "process_req")
+  {
+    var user_name = data[2];
+    querySentence = 'SELECT UID FROM user_information WHERE user_name=\''+user_name+'\'';
+    connection.query(querySentence, function (error, results, fields) {
+      if (error) throw error;
+      var UID = results[0].UID;
+      querySentence = 'SELECT wordCompleteNum FROM user_process WHERE UID=\''+UID+'\'';
+      connection.query(querySentence, function (error, results, fields) {
+        res.writeHead(200, {'Content-Type': 'application/json'});
+        res.end('getProcessSuccess_jsonpCallback(' + JSON.stringify(results[0].wordCompleteNum)+ ')');
+      });
+    });
+  }
+  else if(data[1] == "memorywords_req")
+  {
+    var user_name = data[2];
+    querySentence = 'SELECT UID FROM user_information WHERE user_name=\''+user_name+'\'';
+    connection.query(querySentence, function (error, results, fields) {
+      if (error) throw error;
+      var UID = results[0].UID;
+      querySentence = 'SELECT wordCompleteNum FROM user_process where UID='+'\''+UID+'\'';
+      connection.query(querySentence, function (error, results, fields) {
+        if (error) throw error;
+        var response = "";
+        var wordCompleteNum = results[0].wordCompleteNum;
+        if(wordCompleteNum == 4320)
+        {
+          res.writeHead(200, {'Content-Type': 'application/json'});
+          res.end('memorywordsGetSuccess_jsonpCallback(' +JSON.stringify("this_word_book_complete")+ ')');  
+        }
+        else
+        {
+          for(var i = 0; i < 10; ++i)
+          {
+            response += word_ID_map.get(wordCompleteNum+i) + "&";
+            response += wordMapObj.get(word_ID_map.get(wordCompleteNum+i)) + "&";
+          }
+        }
+      });
+    });
+  }
+  else if(data[1] == "memorycomplete_req")
+  {
+    var user_name = data[2];
+    querySentence = 'SELECT UID FROM user_information WHERE user_name=\''+user_name+'\'';
+    connection.query(querySentence, function (error, results, fields) {
+      if (error) throw error;
+      var UID = results[0].UID;
+      querySentence = 'SELECT wordCompleteNum FROM user_process where UID='+'\''+UID+'\'';
+      connection.query(querySentence, function (error, results, fields) {
+        if (error) throw error;
+        var wordCompleteNum = results[0].wordCompleteNum;
+        querySentence = 'UPDATE user_process SET wordCompleteNum='+(wordCompleteNum+10)+' WHERE UID='+'\''+UID+'\'';
+        connection.query(querySentence, function (error, results, fields) {
+          if (error) throw error;
+          res.writeHead(200, {'Content-Type': 'application/json'});
+          res.end('memoryCompleteSuccess_jsonpCallback(' +JSON.stringify("success")+ ')');
+        });
+      });
+    });
+  }
 }
 
 //start the server

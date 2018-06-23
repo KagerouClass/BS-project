@@ -2,7 +2,6 @@
   $(function(){
 
     $('.button-collapse').sideNav();
-    displayResult(1932, 5426);
     var token = window.location.href.split('?');
     if(token.length > 1)
     {
@@ -11,7 +10,10 @@
       if(user_name.split('=')[0] !== "user_name") user_name ="";
       if(document.getElementById("user_name"))
         document.getElementById("user_name").innerText = window.location.href.split('?')[1].split('=')[1];
+      
     }
+    
+    displayResult();
   }); // end of document ready
 })(jQuery); // end of jQuery name space
 $('.button-collapse').sideNav({
@@ -19,9 +21,22 @@ $('.button-collapse').sideNav({
   }
 );
 var user_name = "";
-function displayResult(num, total){
-  document.getElementById("progress-bar").style.width=calProcess(num, total);
-  document.getElementById("progress-number").innerHTML=showProcess(num, total);
+function displayResult(){
+  var user_name = window.location.href.split('?')[1].split('=')[1];
+  $.ajax({
+    //type: "post",
+    data: "process_req&" + user_name,
+    url: 'http://127.0.0.1:5426',
+    async:false,
+    dataType: "jsonp",
+    jsonp: "callback",
+    jsonpCallback: "getProcessSuccess_jsonpCallback"
+  }).done(function (res) 
+  {
+    var num = res;
+    document.getElementById("progress-bar").style.width=calProcess(num, 4320);
+    document.getElementById("progress-number").innerHTML=showProcess(num, 4320);
+  });
 }
 function showProcess(num, total)
 {  
