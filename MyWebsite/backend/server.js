@@ -5,7 +5,7 @@ var mysql       = require('mysql');
 var fs          = require('fs');
 
 //then get the word list
-var testWordNum = 5;
+var testWordNum = 10;
 var wordMapObj = new Map();
 var word_ID_map = new Map();
 var file = './wordlist/TOEFL_word_list.json';
@@ -428,17 +428,33 @@ function handle(data, res)
             strDate = "0" + strDate;
           }
           var nowDate = date.getFullYear() + seperator + nowMonth + seperator + strDate;
-          querySentence = 'INSERT INTO '+user_name+'_worddate values ('+(wordCompleteNum+10)+', '+'\''+nowDate+'\')';
+          querySentence = 'SELECT * FROM '+user_name+'_worddate where date='+'\''+nowDate+'\'';
           connection.query(querySentence, function (error, results, fields) {
             if (error) throw error;
-            res.writeHead(200, {'Content-Type': 'application/json'});
-            res.end('memoryCompleteSuccess_jsonpCallback(' +JSON.stringify("success")+ ')');
+            if(results[0]) 
+            {
+              querySentence = 'UPDATE '+user_name+'_worddate set process='+(wordCompleteNum+10)+' where date=\''+nowDate+'\'';
+              connection.query(querySentence, function (error, results, fields) {
+                if (error) throw error;
+                res.writeHead(200, {'Content-Type': 'application/json'});
+                res.end('memoryCompleteSuccess_jsonpCallback(' +JSON.stringify("success")+ ')');
+              });
+            }
+            else
+            {
+              querySentence = 'INSERT INTO '+user_name+'_worddate values ('+(wordCompleteNum+10)+', '+'\''+nowDate+'\')';
+              connection.query(querySentence, function (error, results, fields) {
+                if (error) throw error;
+                res.writeHead(200, {'Content-Type': 'application/json'});
+                res.end('memoryCompleteSuccess_jsonpCallback(' +JSON.stringify("success")+ ')');
+              });
+            } 
           });
         });
       });
     });
   }
-  else if(data[1] == "review_req")
+  else if(data[1] == "review_req") 
   {
     var user_name = data[2];
     var page_num  = data[3];
@@ -449,7 +465,7 @@ function handle(data, res)
     }
     if(page_num == 0)
     {
-      isTesting = false;
+      isReviewing = false;
       testScore = 0;
       testWordList = new Array(testWordNum);
       testWordAns  = new Array(testWordNum);
@@ -459,7 +475,7 @@ function handle(data, res)
     {
       res.writeHead(200, {'Content-Type': 'application/json'});
       res.end('reviewPageGetSuccess_jsonpCallback(' +JSON.stringify(testScore)+ ')');
-      isTesting = false;
+      isReviewing = false;
       testScore = 0;
       testWordList = new Array(testWordNum);
       testWordAns  = new Array(testWordNum);
@@ -467,37 +483,130 @@ function handle(data, res)
     }
     else
     {
-      if(!isTesting)
+      if(!isReviewing)
       {
-        for(var i = 0; i < testWordNum; ++i)
-        {
-          var ID = randomNum(0, 4319);
-          testWordList[i] = word_ID_map.get(ID);
-          testWordAns[i] = new Array(4);
-          var rightAnsIndex = randomNum(0, 3);
-          testWordAns[i][rightAnsIndex]=wordMapObj.get(word_ID_map.get(ID));
-          for(var j=0; j < 4; j++)
-          {
-            if(j != rightAnsIndex)
-            {
-              testWordAns[i][j]=wordMapObj.get(word_ID_map.get(randomNum(0, 4319)));
-            }
-          }
-          testRightAns[i] = rightAnsIndex;
+        var date = new Date();
+        var nowMonth = date.getMonth() + 1;
+        var strDate = date.getDate();
+        var seperator = "-";
+        if (nowMonth >= 1 && nowMonth <= 9) {
+          nowMonth = "0" + nowMonth;
         }
-        isTesting = true;
+        if (strDate >= 0 && strDate <= 9) {
+          trDate = "0" + strDate;
+        }
+        var nowDate = date.getFullYear() + seperator + nowMonth + seperator + strDate;
+        var oneBefore = date.getFullYear() + seperator + nowMonth + seperator + (strDate-1);
+        var threeBefore = date.getFullYear() + seperator + nowMonth + seperator + (strDate-3);
+        var sevenBefore = date.getFullYear() + seperator + nowMonth + seperator + (strDate-7);
+        querySentence = 'SELECT process FROM '+user_name+'_worddate where date=\''+sevenBefore+'\'';
+        connection.query(querySentence, function (error, results, fields) {
+          if(results[0])
+          {
+            var max_seven = results[0].process;
+            if (error) throw error;  
+            for(var i = 0; i < testWordNum*0.1; ++i)
+            {
+              var ID = randomNum(0, max_seven);
+              testWordList[i] = word_ID_map.get(ID);
+              testWordAns[i] = new Array(4);
+              var rightAnsIndex = randomNum(0, 3);
+              testWordAns[i][rightAnsIndex]=wordMapObj.get(word_ID_map.get(ID));
+              for(var j=0; j < 4; j++)
+              {
+                if(j != rightAnsIndex)
+                {
+                  testWordAns[i][j]=wordMapObj.get(word_ID_map.get(randomNum(0, 4319)));
+                }
+              }
+              testRightAns[i] = rightAnsIndex;
+            }
+            isReviewing = true;
+          }
+          querySentence = 'SELECT process FROM '+user_name+'_worddate where date=\''+threeBefore+'\'';
+          connection.query(querySentence, function (error, results, fields) {
+            if(results[0])
+            {
+              var max_three = results[0].process;
+              if (error) throw error;  
+              for(var i = testWordNum*0.1; i < testWordNum*0.3; ++i)
+              {
+                var ID = randomNum(max_seven, max_three);
+                testWordList[i] = word_ID_map.get(ID);
+                testWordAns[i] = new Array(4);
+                var rightAnsIndex = randomNum(0, 3);
+                testWordAns[i][rightAnsIndex]=wordMapObj.get(word_ID_map.get(ID));
+                for(var j=0; j < 4; j++)
+                {
+                  if(j != rightAnsIndex)
+                  {
+                    testWordAns[i][j]=wordMapObj.get(word_ID_map.get(randomNum(0, 4319)));
+                  }
+                }
+                testRightAns[i] = rightAnsIndex;
+              }
+              isReviewing = true;
+            }
+            querySentence = 'SELECT process FROM '+user_name+'_worddate where date=\''+oneBefore+'\'';
+            connection.query(querySentence, function (error, results, fields) {
+              if(results[0])
+              {
+                var max_one = results[0].process;
+                if (error) throw error;  
+                for(var i = testWordNum*0.3; i < testWordNum; ++i)
+                {
+                  var ID = randomNum(max_one, max_three);
+                  testWordList[i] = word_ID_map.get(ID);
+                  testWordAns[i] = new Array(4);
+                  var rightAnsIndex = randomNum(0, 3);
+                  testWordAns[i][rightAnsIndex]=wordMapObj.get(word_ID_map.get(ID));
+                  for(var j=0; j < 4; j++)
+                  {
+                    if(j != rightAnsIndex)
+                    {
+                      testWordAns[i][j]=wordMapObj.get(word_ID_map.get(randomNum(0, 4319)));
+                    }
+                  }
+                  testRightAns[i] = rightAnsIndex;
+                }
+                isReviewing = true;
+              }
+              for(var i=0; i<testWordNum;++i)
+              {
+                if(!testWordList[i])
+                {
+                  var ID = randomNum(0, 4319);
+                  testWordList[i] = word_ID_map.get(ID);
+                  testWordAns[i] = new Array(4);
+                  var rightAnsIndex = randomNum(0, 3);
+                  testWordAns[i][rightAnsIndex]=wordMapObj.get(word_ID_map.get(ID));
+                  for(var j=0; j < 4; j++)
+                  {
+                    if(j != rightAnsIndex)
+                    {
+                      testWordAns[i][j]=wordMapObj.get(word_ID_map.get(randomNum(0, 4319)));
+                    }
+                  }
+                  testRightAns[i] = rightAnsIndex;
+                }
+              }
+              var response = "";
+              response += testWordList[page_num] + "&";
+              for(var i = 0; i < 4; ++i)
+              {
+                response += testWordAns[page_num][i] + "&";
+              }
+              response += testRightAns[page_num];
+              res.writeHead(200, {'Content-Type': 'application/json'});
+              res.end('reviewPageGetSuccess_jsonpCallback(' +JSON.stringify(response)+ ')');
+              
+            });
+          });
+        });
       }
-      var response = "";
-      response += testWordList[page_num] + "&";
-      for(var i = 0; i < 4; ++i)
-      {
-        response += testWordAns[page_num][i] + "&";
-      }
-      response += testRightAns[page_num];
-      res.writeHead(200, {'Content-Type': 'application/json'});
-      res.end('reviewPageGetSuccess_jsonpCallback(' +JSON.stringify(response)+ ')');
-      
+       
     }
+    
   }
 }
 

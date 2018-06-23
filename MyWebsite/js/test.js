@@ -41,6 +41,7 @@ function toProcess()
 }
 function getTestPage()
 {
+  var user_name = window.location.href.split('?')[1].split('=')[1];
   $.ajax({
     //type: "post",
     data: "test_req&" + user_name +"&"+test_current_page+"&"+previous_ans,
@@ -77,7 +78,7 @@ function getTestPage()
       document.getElementById("choice-2").innerText = choice[1];
       document.getElementById("choice-3").innerText = choice[2];
       document.getElementById("choice-4").innerText = choice[3];
-      document.getElementById("test-process").innerText = test_current_page+" / 5";
+      document.getElementById("test-process").innerText = test_current_page+" / 10";
     }
     
   });

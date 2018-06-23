@@ -45,14 +45,15 @@ function toUserWordBook()
 }
 function getReviewPage()
 {
+  var user_name = window.location.href.split('?')[1].split('=')[1];
   $.ajax({
     //type: "post",
-    data: "test_req&" + user_name +"&"+review_current_page+"&"+previous_ans,
+    data: "review_req&" + user_name +"&"+review_current_page+"&"+previous_ans,
     url: 'http://127.0.0.1:5426',
     async:false,
     dataType: "jsonp",
     jsonp: "callback",
-    jsonpCallback: "testPageGetSuccess_jsonpCallback"
+    jsonpCallback: "reviewPageGetSuccess_jsonpCallback"
   }).done(function (res) 
   {
     console.log(res);
@@ -80,7 +81,7 @@ function getReviewPage()
       document.getElementById("choice-2").innerText = choice[1];
       document.getElementById("choice-3").innerText = choice[2];
       document.getElementById("choice-4").innerText = choice[3];
-      document.getElementById("review-process").innerText = review_current_page+" / 5";
+      document.getElementById("review-process").innerText = review_current_page+" / 10";
     }
     
   });
