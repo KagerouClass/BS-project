@@ -390,6 +390,8 @@ function handle(data, res)
             response += word_ID_map.get(wordCompleteNum+i) + "&";
             response += wordMapObj.get(word_ID_map.get(wordCompleteNum+i)) + "&";
           }
+          res.writeHead(200, {'Content-Type': 'application/json'});
+          res.end('memorywordsGetSuccess_jsonpCallback(' +JSON.stringify(response)+ ')');  
         }
       });
     });

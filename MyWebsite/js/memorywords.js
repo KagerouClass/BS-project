@@ -40,7 +40,7 @@ function toUserWordBook()
 {
   window.location.href = 'userwordbook.html?' + user_name;
 }
-function learnComplete()
+function learnComplete(flag)
 {
   var user_name = window.location.href.split('?')[1].split('=')[1];
   if(false == is_this_word_book_complete)
@@ -60,9 +60,11 @@ function learnComplete()
   }
   else
   {
-
   }
-  window.location.href = 'bookhomepage.html?user_name=' + user_name;
+  if(0==flag)
+    window.location.href = 'bookhomepage.html?user_name=' + user_name;
+  else if(1==flag)
+    getWord();
 }
 function getWord()
 {
@@ -81,6 +83,8 @@ function getWord()
     {
       is_this_word_book_complete = true;
       alert("恭喜您已背完本词汇书");
+      document.getElementById("next-10").innerHTML ="";
+      window.location.href = 'bookhomepage.html?user_name=' + user_name;
     }
     else
     {
