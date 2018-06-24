@@ -135,12 +135,12 @@ function handle(data, res)
           else
           {
             querySentence = 'CREATE TABLE \`mywordbook_user\`.\`'+user_name+'_book\` ('+
-              '\`wordID\` INT NOT NULL,'+
-              '\`word\` VARCHAR(255) NOT NULL,'+
-              '\`meanning\` VARCHAR(255) NOT NULL,'+
-              'PRIMARY KEY (\`wordID\`),'+
-              'UNIQUE INDEX \`wordID_UNIQUE\` (\`wordID\` ASC) VISIBLE,'+
-              'UNIQUE INDEX \`word_UNIQUE\` (\`word\` ASC) VISIBLE);';
+              '`wordID` INT NOT NULL,'+
+              '`word` VARCHAR(255) NOT NULL,'+
+              '`meanning` VARCHAR(255) NOT NULL,'+
+              'PRIMARY KEY (`wordID`),'+
+              'UNIQUE KEY `wordID_UNIQUE` (`wordID`),'+
+              'UNIQUE KEY `word_UNIQUE` (`word`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;';
             connection.query(querySentence, function (error, results, fields) {
               if (error) throw error;
             });
@@ -205,8 +205,8 @@ function handle(data, res)
   else if(data[1] == "addWordToBook_req") 
   {
     user_name = data[2];
-    var wordReadyToAdd  = data[3];
-    var explanation     = data[4];
+    var wordReadyToAdd  = decodeURI(data[3]);
+    var explanation     = decodeURI(data[4]);
     querySentence = 'SELECT word FROM '+user_name+'_book WHERE word=\''+wordReadyToAdd+'\'';
     connection.query(querySentence, function (error, results, fields) {
       if (error) throw error;
@@ -268,7 +268,7 @@ function handle(data, res)
             for(var i = 0; i < currentPageWordNumber; ++i)
             { 
               response += "&";
-              response += results[i].meanning;
+              response += decodeURI(results[i].meanning);
             }
             res.writeHead(200, {'Content-Type': 'application/json'});
             res.end('bookSuccess_jsonpCallback(' + JSON.stringify(response)+ ')');

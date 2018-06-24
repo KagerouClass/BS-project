@@ -55,16 +55,18 @@ function learnComplete(flag)
       jsonpCallback: "memoryCompleteSuccess_jsonpCallback"
     }).done(function (res) 
     {
-  
+      if(0==flag)
+        window.location.href = 'bookhomepage.html?user_name=' + user_name;
+      else if(1==flag)
+        getWord();
     });
   }
   else
   {
-  }
   if(0==flag)
     window.location.href = 'bookhomepage.html?user_name=' + user_name;
-  else if(1==flag)
-    getWord();
+  }
+  
 }
 function getWord()
 {
