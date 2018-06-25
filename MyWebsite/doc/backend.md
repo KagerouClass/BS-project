@@ -31,13 +31,13 @@
      UNIQUE KEY `UID_UNIQUE` (`UID`),
      UNIQUE KEY `user_name_UNIQUE` (`user_name`),
      UNIQUE KEY `email_UNIQUE` (`email`)
-   );
+   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
    CREATE TABLE `user_process` (
      `UID` int(11) NOT NULL,
      `wordCompleteNum` int(11) NOT NULL,
      PRIMARY KEY (`UID`),
      UNIQUE KEY `UID_UNIQUE` (`UID`)
-   );
+   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
    ```
 
    
