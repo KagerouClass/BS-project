@@ -10,7 +10,12 @@ function checkUsername(user_name)
 {  
     if(user_name.value.length!=0)
     {  
-        return true;  
+        if(user_name.value.length<6)
+        {
+            alert("用户名长度过短，需要在6个字符以上");  
+            return false;  
+        }
+        return true;   
     }
     else{  
         alert("请输入用户名");  
@@ -21,6 +26,11 @@ function checkPassword(password)
 {  
     if(password.value.length!=0)
     {  
+        if(password.value.length<6)
+        {
+            alert("密码长度过短，需要在6个字符以上");  
+            return false;  
+        }
         return true;  
     }
     else
