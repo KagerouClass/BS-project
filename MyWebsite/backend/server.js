@@ -302,10 +302,7 @@ function handle(data, res)
     var user_name = data[2];
     var page_num  = data[3];
     var previous_ans = data[4];
-    if(previous_ans == testRightAns[page_num-1])
-    {
-      testScore++;
-    }
+    
     if(page_num == 0)
     {
       isTesting = false;
@@ -313,6 +310,13 @@ function handle(data, res)
       testWordList = new Array(testWordNum);
       testWordAns  = new Array(testWordNum);
       testRightAns = new Array(testWordNum);
+    }
+    else
+    {
+      if(previous_ans == testRightAns[page_num-1])
+      {
+        testScore++;
+      }
     }
     if(page_num==testWordNum)
     {
@@ -459,10 +463,7 @@ function handle(data, res)
     var user_name = data[2];
     var page_num  = data[3];
     var previous_ans = data[4];
-    if(previous_ans == testRightAns[page_num-1])
-    {
-      testScore++;
-    }
+    
     if(page_num == 0)
     {
       isReviewing = false;
@@ -470,6 +471,13 @@ function handle(data, res)
       testWordList = new Array(testWordNum);
       testWordAns  = new Array(testWordNum);
       testRightAns = new Array(testWordNum);
+    }
+    else
+    {
+      if(previous_ans == testRightAns[page_num-1])
+      {
+        testScore++;
+      }
     }
     if(page_num==testWordNum)
     {
@@ -604,7 +612,17 @@ function handle(data, res)
           });
         });
       }
-       
+      else
+      {
+        response += testWordList[page_num] + "&";
+        for(var i = 0; i < 4; ++i)
+        {
+          response += testWordAns[page_num][i] + "&";
+        }
+        response += testRightAns[page_num];
+        res.writeHead(200, {'Content-Type': 'application/json'});
+        res.end('reviewPageGetSuccess_jsonpCallback(' +JSON.stringify(response)+ ')');
+      } 
     }
     
   }
