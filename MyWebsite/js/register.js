@@ -33,6 +33,12 @@ function checkEmail(email)
 {  
     if(email.value.length!=0)
     {  
+        var regEXP = /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/;
+        if(!regEXP.test(email.value))
+        {
+            alert("邮箱地址不合法！");
+            return false;
+        }
         return true;  
     }
     else
